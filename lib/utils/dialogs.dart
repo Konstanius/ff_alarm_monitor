@@ -5,6 +5,7 @@ import 'globals.dart';
 abstract class Dialogs {
   static Future<void> error({
     required String message,
+    Duration autoCloseDuration = const Duration(seconds: 10),
   }) =>
       QuickAlert.show(
         context: Globals.context,
@@ -13,7 +14,7 @@ abstract class Dialogs {
         title: 'Fehler',
         barrierDismissible: true,
         width: 400,
-        autoCloseDuration: const Duration(seconds: 5),
+        autoCloseDuration: autoCloseDuration,
       );
 
   static void loading({

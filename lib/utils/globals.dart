@@ -12,6 +12,8 @@ abstract class Globals {
   static final ValueNotifier<bool> loggedIn = ValueNotifier<bool>(false);
   static Monitor? monitor;
 
+  static String get server => prefs.getString('server_domain')!;
+
   static void logout() {
     prefs.remove('monitor_id');
     prefs.remove('server_domain');

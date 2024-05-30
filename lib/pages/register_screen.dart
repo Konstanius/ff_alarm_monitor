@@ -21,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Map<String, dynamic>? fetchedData;
 
   Future<void> generateSession() async {
+    int tries = 0;
     while (true) {
       try {
         Random random = Random();
@@ -34,6 +35,15 @@ class _RegisterPageState extends State<RegisterPage> {
       } catch (e, s) {
         print(e);
         print(s);
+        tries++;
+        if (tries >= 5) {
+          Dialogs.error(
+            message: 'Zugangscode konnte nach 5 Versuchen nicht über Ghostbin generiert werden.\n\nBitte überprüfen Sie die Internetverbindung und starten den Monitor-Rechner neu.',
+            autoCloseDuration: const Duration(days: 365),
+          );
+          return;
+        }
+        await Future.delayed(const Duration(seconds: 1));
       }
     }
   }

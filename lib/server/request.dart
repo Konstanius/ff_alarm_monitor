@@ -32,7 +32,7 @@ class Request {
       connectTimeout: Duration(milliseconds: timeout),
       receiveTimeout: Duration(milliseconds: timeout),
       sendTimeout: Duration(milliseconds: timeout),
-      headers: !guest ? getAuthData(server) : null,
+      headers: !guest ? getAuthData() : null,
       method: 'POST',
       baseUrl: 'http$server/api/',
       receiveDataWhenStatusError: true,
@@ -135,8 +135,8 @@ class Request {
     return this;
   }
 
-  static Map<String, String> getAuthData(String server) {
-    String rawAuth = '${Globals.prefs.getInt('monitor_id')} ${Globals.prefs.getString('monitor_token')}';
+  static Map<String, String> getAuthData() {
+    String rawAuth = '${-(Globals.prefs.getInt('monitor_id')!)} ${Globals.prefs.getString('monitor_token')}';
     String encodedAuth = base64Encode(gzip.encode(utf8.encode(rawAuth)));
 
     Map<String, String> headers = {"authorization": encodedAuth};

@@ -1,0 +1,78 @@
+Install Raspberry Pi Desktop 64 Bit
+	Options require:
+		Enable WiFi
+		Enable SSH
+		Username & Passwort
+
+Plug into power and TV
+Turn on, ssh into it
+
+sudo raspi-config
+	System Options -> Boot / Auto Login
+		Console (Autologin)
+
+Have to compile with "flutter pub global activate flutterpi_tool ^0.3.0"
+Run it with "flutter-pi --release /home/pi/ff_alarm_monitor/flutter_assets"
+Verify it works
+Stop it
+
+Create service:
+	sudo nano /etc/systemd/system/flutter_pi.service
+		[Unit]
+		Description=Flutter Pi Service
+		After=network.target
+
+		[Service]
+		ExecStart=/usr/local/bin/flutter-pi --release /home/pi/ff_alarm_monitor/flutter_assets
+		WorkingDirectory=/home/pi/ff_alarm_monitor
+		User=pi
+		Restart=always
+		RestartSec=10
+
+		[Install]
+		WantedBy=multi-user.target
+	sudo systemctl daemon-reload
+	sudo systemctl enable flutter_pi.service
+	sudo systemctl start flutter_pi.service
+
+In case of issues with read-only filesystem, put this in /etc/rc.local:
+	sudo mount -o remount,rw /
+	sudo systemctl daemon-reload
+
+
+
+
+
+
+
+Steps:
+	Raspberry Pi OS Installer:
+		Select correct device
+		Select 64 / 32 Bit Raspberry Pi OS Desktop
+		Select Username & Password
+		Setup WiFi (SSID, Password, LAN country)
+		Set locale
+		Enable SSH in Services
+		Dont eject media when finished
+	Continue with running ff_alarm_monitor installer
+		install git & follow flutter-pi installation process
+		setup raspi-config (Console (Autologin))
+		download latest release of ff_alarm_monitor flutter_assets.zip
+		setup systemd service for managing the monitor flutter instance:
+			sudo nano /etc/systemd/system/flutter_pi.service
+				[Unit]
+				Description=Flutter Pi Service
+				After=network.target
+
+				[Service]
+				ExecStart=/usr/local/bin/flutter-pi --release /home/pi/ff_alarm_monitor/flutter_assets
+				WorkingDirectory=/home/pi/ff_alarm_monitor
+				User=pi
+				Restart=always
+				RestartSec=10
+
+				[Install]
+				WantedBy=multi-user.target
+			sudo systemctl daemon-reload
+			sudo systemctl enable flutter_pi.service
+			sudo systemctl start flutter_pi.service

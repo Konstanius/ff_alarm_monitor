@@ -22,4 +22,8 @@ abstract class Interfaces {
 
     return monitor;
   }
+
+  static Future<void> ping() async {
+    await Request('ping', {}, Globals.server).emit(true);
+  }
 }
